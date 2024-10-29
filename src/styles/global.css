@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+:root {
+  --naruto-orange: #FE8019;
+  --naruto-blue: #005CAF;
+  --naruto-red: #BC002D;
+  --akatsuki-red: #D41C1C;
+  --scroll-bg: #E4D4C8;
+  --chakra-blue: #00A3FF;
+}
+
+@keyframes chakraGlow {
+  0%, 100% { box-shadow: 0 0 20px var(--chakra-blue); }
+  50% { box-shadow: 0 0 40px var(--chakra-blue); }
+}
+
+@keyframes scrollReveal {
+  0% { transform: scale(0) rotate(-720deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes floatingScroll {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes chakraParticle {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.scroll-text {
+  font-family: 'Permanent Marker', cursive;
+  -webkit-text-stroke: 1px black;
+}
+
+.chakra-container::before,
+.chakra-container::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--chakra-blue) 90deg,
+    transparent 180deg,
+    var(--naruto-orange) 270deg,
+    transparent 360deg
+  );
+  border-radius: inherit;
+  animation: rotate 4s linear infinite;
+}
+
+.chakra-container::after {
+  animation: rotate 4s linear infinite reverse;
+  filter: blur(10px);
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.particle {
+  pointer-events: none;
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--chakra-blue);
+  border-radius: 50%;
+}

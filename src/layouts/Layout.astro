@@ -1,0 +1,115 @@
+---
+import { NavControls, ProjectDetails } from '../components/Navigation';
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap">
+</head>
+<body class="bg-slate-900 text-white">
+  <!-- Chakra Energy Background -->
+  <div class="fixed inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
+    <div class="chakra-grid"></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="relative z-10">
+    <slot />
+  </main>
+
+  <!-- Kunai Cursor -->
+  <div id="custom-cursor" class="hidden md:block">
+    <svg width="24" height="24" viewBox="0 0 24 24" class="kunai-cursor">
+      <path d="M12 2L2 22l10-6 10 6L12 2z" fill="var(--naruto-orange)" />
+    </svg>
+  </div>
+
+  <script>
+    import { NavControls, ProjectDetails } from '../components/Navigation';
+  </script>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --naruto-orange: #FE8019;
+    --naruto-blue: #005CAF;
+    --naruto-red: #BC002D;
+    --akatsuki-red: #D41C1C;
+    --scroll-bg: #E4D4C8;
+    --chakra-blue: #00A3FF;
+  }
+
+  /* Kunai Cursor */
+  body {
+    cursor: none;
+  }
+
+  .kunai-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.2s;
+  }
+
+  /* Chakra Grid Background */
+  .chakra-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--chakra-blue) 1px, transparent 1px),
+      linear-gradient(90deg, var(--chakra-blue) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.1;
+    animation: gridPulse 4s infinite;
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.05; }
+    50% { opacity: 0.15; }
+  }
+
+  /* Scroll Animations */
+  .scroll-reveal {
+    animation: scrollReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes scrollReveal {
+    0% { transform: scale(0) rotate(-720deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+</style>
+
+<script>
+  // Custom Kunai Cursor
+  const cursor = document.getElementById('custom-cursor');
+  document.addEventListener('mousemove', (e) => {
+    if (cursor) {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      // Rotate kunai based on movement direction
+      const dx = e.movementX;
+      const dy = e.movementY;
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      cursor.style.transform = `rotate(${angle}deg)`;
+    }
+  });
+
+  // Add chakra effect on click
+  document.addEventListener('click', (e) => {
+    const chakra = document.createElement('div');
+    chakra.className = 'chakra-burst';
+    chakra.style.left = e.clientX + 'px';
+    chakra.style.top = e.clientY + 'px';

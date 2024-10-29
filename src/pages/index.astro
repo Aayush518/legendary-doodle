@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard';
+import { projects } from '../data/projects';
+---
+
+<Layout title="Shinobi Portfolio">
+  <div class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 chakra-particles"></div>
+      
+      <div class="relative z-10 text-center space-y-8">
+        <h1 class="scroll-text text-7xl font-bold mb-6 animate-chakra-pulse">
+          <span class="text-naruto-orange">Shinobi</span>
+          <span class="text-white">Projects</span>
+        </h1>
+        
+        <p class="text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          Exploring the path of code like a true ninja. Each project represents a new jutsu mastered.
+        </p>
+        
+        <div class="scroll-seal animate-float">
+          <svg class="w-24 h-24 mx-auto" viewBox="0 0 100 100">
+            <!-- Stylized scroll seal SVG -->
+            <circle cx="50" cy="50" r="45" fill="none" stroke="var(--naruto-orange)" stroke-width="2"/>
+            <path class="chakra-spiral" d="M50 5 C 60 25, 75 40, 95 50 C 75 60, 60 75, 50 95 C 40 75, 25 60, 5 50 C 25 40, 40 25, 50 5" fill="none" stroke="var(--chakra-blue)" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Projects Grid -->
+    <div class="projects-container py-20 px-4 md:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <div class="project-card-wrapper">
+            <ProjectCard client:load project={project} />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="project-modal"></div>
+  </div>
+</Layout>
+
+<script>
+  // Chakra Particles Animation
+  const createChakraParticle = () => {
+    const particles = document.querySelector('.chakra-particles');
+    if (!particles) return;
+
+    const particle = document.createElement('div');
+    particle.className = 'chakra-particle';
+    
+    const size = Math.random() * 10 + 5;
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    
+    particles.appendChild(particle);
+    
+    setTimeout(() => particle.remove(), 2000);
+  };
+
+  setInterval(createChakraParticle, 100);
+
+  // Scroll Animation
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.classList.add('scroll-reveal');
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll('.project-card-wrapper').forEach((el) => observer.observe(el));
+</script>
+
+<style>
+  .animate-chakra-pulse {
+    animation: chakraPulse 2s infinite;
+  }
+
+  .animate-float {
+    animation: floatingScroll 3s ease-in-out infinite;
+  }
+
+  .chakra-particle {
+    position: absolute;
+    background: var(--chakra-blue);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.6;
+    animation: chakraParticle 2s ease-out forwards;
+  }
+
+  .chakra-spiral {
+    animation: rotateSeal 10s linear infinite;
+  }
+
+  .project-card-wrapper {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-card-wrapper.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .scroll-reveal {
+    animation: scrollReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes chakraPulse {
+    0%, 100% { text-shadow: 0 0 20px var(--chakra-blue); }
+    50% { text-shadow: 0 0 40px var(--chakra-blue); }
+  }
+
+  @keyframes rotateSeal {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
